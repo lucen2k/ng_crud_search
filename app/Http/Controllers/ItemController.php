@@ -14,9 +14,12 @@ class ItemController extends Controller
         $input = $request->all();
         if($request->get('search')){
             $items = Item::where("title", "LIKE", "%{$request->get('search')}%")
+                ->orWhere("description", "LIKE", "%{$request->get('search')}%")
+                ->orderBy('id', 'desc')
                 ->paginate(5);      
         }else{
-		  $items = Item::paginate(5);
+		  $items = Item::orderBy('id', 'desc')
+		    ->paginate(5);
         }
         return response($items);
     }
